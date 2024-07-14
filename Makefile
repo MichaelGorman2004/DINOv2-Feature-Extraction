@@ -3,8 +3,11 @@
 # Python interpreter to use
 PYTHON := python3
 
+# Script to run
+SCRIPT := feature_extraction.py
+
 # Define phony targets (targets that don't represent files)
-.PHONY: check black isort flake8 mypy pylint
+.PHONY: check black isort flake8 mypy pylint run
 
 # Default target
 all: check
@@ -37,6 +40,11 @@ pylint:
 	@echo "Running pylint..."
 	$(PYTHON) -m pylint **/*.py
 
+# Run the script
+run:
+	@echo "Running $(SCRIPT)..."
+	$(PYTHON) $(SCRIPT)
+
 # Clean up Python cache files
 clean:
 	@echo "Cleaning up Python cache files..."
@@ -52,5 +60,6 @@ help:
 	@echo "  flake8  : Run flake8 linter"
 	@echo "  mypy    : Run mypy type checker"
 	@echo "  pylint  : Run pylint"
+	@echo "  run     : Run the Python script"
 	@echo "  clean   : Remove Python cache files"
 	@echo "  help    : Show this help message"
