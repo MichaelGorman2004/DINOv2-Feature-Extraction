@@ -1,10 +1,19 @@
+import json
 import os
 from io import BytesIO
+from urllib.request import urlopen
 
 import requests
-from PIL import Image
 import torch
 import torchvision.transforms as transforms
+from PIL import Image
+
+
+def get_urls(config_file="image_urls.json"):
+    with open(config_file, "r") as f:
+        urls = json.load(f)
+    return urls
+
 
 def download_load_image(url):
     response = requests.get(url)
@@ -14,31 +23,34 @@ def download_load_image(url):
         print(f"Failed to download image from {url}")
         return None
 
-def resize_image(image, size=(100,100)):
-    transform = transforms.Compose([
-        transforms.Resize(size),
-        transforms.ToTensor()
-    ])
+
+def resize_image(image, size=(100, 100)):
+    transform = transforms.Compose([transforms.Resize(size), transforms.ToTensor()])
     return transform(image)
 
-flower_url = os.getenv('FLOWER_URL')
-bird_url = os.getenv('BIRD_URL')
 
-if not flower_url or not bird_url:
-    raise ValueError("Please set the environment variables FLOWER_URL and BIRD_URL")
 
-image_urls = [flower_url, bird_url]
 
-images = []
-for url in image_urls:
-    image = download_load_image(url)
-    if image:
-        print(f"Successfully loaded image from {url}")
-        print(f"Original Image Size: {image.size}")
-        resize_image = resize_image(image)
-        images.append(image)
-        print(f"Resized Image Size: {image.size}")
-    else:
-        print(f"Failed to load image from {url}")
+
+def main():
+    urls = get_urls()
+    images = []
+    
+    for image_name, url in urls.items():
+        print(f"Attempting to load {image_name} from {url}")
+        image = download_load_image(url)
+        
+        if image:
+            print(f"Successfully loaded image: {image_name}")
+            print(f"Original Image Size: {image.size}")
+            
+            resized_image = resize_image(image)
+            images.append(resized_image)
+            
+            print(f"Resized Image Size: {resized_image.size}")
+        else:
+            print(f"Failed to load image: {image_name}")
+    
+    print(f"Total images processed: {len(images)}")
 
 # TODO: Continue along project workflow
