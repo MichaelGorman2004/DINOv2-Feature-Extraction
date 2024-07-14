@@ -1,0 +1,25 @@
+[tool.poetry]
+name = "dinov2-feature-extraction"
+version = "0.1.0"
+description = ""
+authors = ["Michael Gorman <gorman.270@osu.edu>"]
+
+[tool.poetry.dependencies]
+python = "^3.10"
+transformers = "4.40.0"
+torch = "2.3.0"
+torchvision = "0.18.0"
+requests = "^2.32.3"
+black = "^24.4.2"
+isort = "^5.13.2"
+flake8 = "^7.1.0"
+mypy = "^1.10.1"
+pylint = "^3.2.5"
+types-requests = "^2.32.0"
+direnv = "^2020.12.3"
+
+[tool.poetry.dev-dependencies]
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
